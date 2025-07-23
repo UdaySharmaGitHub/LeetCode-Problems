@@ -25,6 +25,11 @@ Example 2:
 Input: s = "aabbaaxybbaabb", x = 5, y = 4
 Output: 20
 */
+/*
+    Using Greedy And Counting
+    Time Complexity:O(n);
+    Space Complexity:O(1);
+*/
 class Solution {
 public:
     int maximumGain(string s, int x, int y) {
@@ -57,5 +62,31 @@ public:
 
         result += min(aCount, bCount) * lesser;
         return result;
+    }
+};
+/*
+    Using String Function
+    Time Complexity:O(n*log(n));
+    Space Complexity:O(n);
+*/
+class Solution {
+public:
+    int maximumGain(string s, int x, int y) {
+        int res =0 ;
+        string ys = "ba" , xs="ab";
+        if(x>y){ swap(x,y);swap(xs,ys);}
+        size_t find2 = s.find(ys);
+        while(find2!=-1){
+            s.erase(find2,2);
+            res+=y;
+            find2 = s.find(ys);
+        }
+        find2 = s.find(xs);
+        while(find2!=-1){
+            s.erase(find2,2);
+            res+=x;
+            find2 = s.find(xs);
+        }
+        return res;
     }
 };
