@@ -22,6 +22,19 @@ The number of nodes in the list is in the range [0, 500].
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+ /*
+ 
+    APPROACH: 
+    steps:
+    1. find the length of the linked list and the tail node.
+    2. connect the tail node to the head node to make it circular.
+    3. find the new tail node which is (len-k%len)th node from the beginning and the new head node which is (len-k%len+1)th node
+    4. break the circular connection by setting the next of the new tail node to null.
+    5. return the new head node.
+
+    Time Complexity: O(n) where n is the number of nodes in the linked list.
+    Space Complexity: O(1) as we are using only constant extra space.
+ */
 class Solution {
 private:
 ListNode* FindNthNode(ListNode* head,int k){
