@@ -24,6 +24,16 @@ Constraints:
 1 <= nums.length <= 100
 1 <= nums[i] <= 100
 */
+/*
+    APPROACH:
+    Step:
+    1. We will iterate through the array and count the number of times the current element is greater than the next element. This will help us identify the number of rotations.
+    2. We will also check if the last element is greater than the first element, which indicates a rotation at the end of the array.
+    3. If the count of rotations is less than or equal to 1, it means the array is sorted and rotated at most once, and we will return true. Otherwise, we will return false.
+
+    Time Complexity: O(n) - We need to iterate through the array once.
+    Auxiliary Space: O(1) - We are using a constant amount of space to store the count and other variables.
+*/
 class Solution {
 public:
     bool check(vector<int>& nums) {
