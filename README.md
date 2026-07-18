@@ -22,6 +22,7 @@ A collection of **374 solved LeetCode problems** in C++, organized by difficulty
 
 ## 📚 Table of Contents
 
+- [Git Hooks Setup](#-git-hooks-setup)
 - [Easy Problems](#-easy-problems)
 - [Medium Problems](#-medium-problems)
 - [Hard Problems](#-hard-problems)
@@ -29,7 +30,106 @@ A collection of **374 solved LeetCode problems** in C++, organized by difficulty
 
 ---
 
-## 🟢 Easy Problems
+## � Git Hooks Setup
+
+This repository uses **Git Hooks** to automate and standardize commit messages. Hooks help maintain consistency across all commits.
+
+### What are Git Hooks?
+
+Git hooks are scripts that run automatically at certain points in the Git workflow. In this repository, we use:
+
+- **`prepare-commit-msg`**: Automatically generates commit message templates with a consistent format
+- **`commit-msg`**: Validates commit messages to ensure they meet minimum standards
+
+### Commit Message Format
+
+Commit messages follow this format:
+```
+POTD DD-MM-YYYY : problem name [Easy | Medium | Hard]
+```
+
+Example:
+```
+POTD 1/06/2026 : Two Sum [Easy]
+POTD 2/06/2026 : BST [Medium]
+```
+
+### Setup Instructions
+
+#### Method 1: Automatic Setup (Recommended)
+
+Run the setup script from the repository root:
+
+```bash
+bash setup-hooks.sh
+```
+
+This script will:
+- Create the `.git/hooks/` directory if it doesn't exist
+- Copy the hook files from `git_hooks/` to `.git/hooks/`
+- Make the hooks executable with proper permissions
+- Display confirmation messages
+
+#### Method 2: Manual Setup
+
+If you prefer to set up hooks manually:
+
+```bash
+# Copy hooks to git directory
+cp git_hooks/prepare-commit-msg .git/hooks/prepare-commit-msg
+cp git_hooks/commit-msg .git/hooks/commit-msg
+
+# Make them executable
+chmod +x .git/hooks/prepare-commit-msg
+chmod +x .git/hooks/commit-msg
+```
+
+### Using the Hooks
+
+Once installed, the hooks work automatically:
+
+```bash
+# Simply commit as usual - the message will be auto-generated
+git add .
+git commit
+
+# The hook will prompt you to confirm or edit the auto-generated message
+```
+
+### Hook Details
+
+**prepare-commit-msg Hook:**
+- Runs before the commit message editor opens
+- Auto-generates commit messages in the format: `LeetCode NNNN : Problem_Name`
+- Extracts the problem number from the directory/file path
+
+**commit-msg Hook:**
+- Runs after you enter the commit message
+- Validates that the message is at least 5 characters long
+- Ensures messages follow the expected format
+- Prevents empty or invalid commits
+
+### Troubleshooting
+
+**Hooks not running?**
+- Verify they are executable: `ls -l .git/hooks/`
+- Check that `setup-hooks.sh` completed successfully
+- Ensure you're in the repository root directory
+
+**Need to bypass hooks temporarily?**
+```bash
+# Use --no-verify to skip hook validation
+git commit --no-verify
+```
+
+**Hook files location:**
+- Shared hooks: `git_hooks/` directory
+- Active hooks: `.git/hooks/` directory (created by setup script)
+- Note: `.git/` is local to your machine, not shared with others
+
+---
+
+## �🟢 Easy Problems
 
 | # | Problem | Solution |
 |--:|---------|:--------:|

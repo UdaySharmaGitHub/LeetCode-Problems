@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Git Hook: prepare-commit-msg
+# Auto-format commit messages for GFG Problems
+# This hook runs after 'git commit' but before the editor opens
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# Don't modify merge commits or other special commits
+if [ "$COMMIT_SOURCE" != "" ]; then
+    exit 0
+fi
+
+# Get the current branch name
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Get list of modified/added files
+FILES=$(git diff --cached --name-only)
+TYPE=""
+
+# Analyze files to determine problem type/difficulty
+if echo "$FILES" | grep -q "School"; then
+    TYPE="[School]"
+elif echo "$FILES" | grep -q "Basic"; then
+    TYPE="[Basic]"
+elif echo "$FILES" | grep -q "Easy"; then
+    TYPE="[Easy]"
+elif echo "$FILES" | grep -q "Medium"; then
+    TYPE="[Medium]"
+elif echo "$FILES" | grep -q "Hard"; then
+    TYPE="[Hard]"
+fi
+
+# Extract problem name from file changes
+PROBLEM_NAME=$(echo "$FILES" | head -1 | sed 's/.*\///g' | sed 's/\.cpp//g' | sed 's/_/ /g')
+
+# Get current date in DD-MM-YYYY format
+CURRENT_DATE=$(date +%d-%m-%Y)
+
+# Only auto-populate if commit message is empty or default
+if [ ! -s "$COMMIT_MSG_FILE" ] || grep -q "# Please enter" "$COMMIT_MSG_FILE"; then
+    # Create auto-generated message in format: POTD <date> : problem_name [Type]
+    if [ -z "$TYPE" ]; then
+        AUTO_MSG="POTD ${CURRENT_DATE} : ${PROBLEM_NAME}"
+    else
+        AUTO_MSG="POTD ${CURRENT_DATE} : ${PROBLEM_NAME} ${TYPE}"
+    fi
+    
+    # Insert the message at the beginning
+    echo "$AUTO_MSG" > "$COMMIT_MSG_FILE.tmp"
+    cat "$COMMIT_MSG_FILE" >> "$COMMIT_MSG_FILE.tmp"
+    mv "$COMMIT_MSG_FILE.tmp" "$COMMIT_MSG_FILE"
+fi
+
+exit 0

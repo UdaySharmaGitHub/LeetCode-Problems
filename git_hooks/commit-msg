@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Git Hook: commit-msg
+# Validate and enhance commit messages
+# This hook runs after you write the commit message but before it's saved
+
+COMMIT_MSG_FILE=$1
+
+# Read the commit message
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Skip validation for merge commits
+if echo "$COMMIT_MSG" | grep -q "^Merge"; then
+    exit 0
+fi
+
+# Check if message starts with POTD format
+if ! echo "$COMMIT_MSG" | grep -qE "^POTD [0-9]{2}-[0-9]{2}-[0-9]{4} : "; then
+    # If not, check if it's manually written (starts with capital letter)
+    if ! echo "$COMMIT_MSG" | grep -qE "^[A-Z]"; then
+        echo "⚠️  Warning: Commit message should start with POTD or a capital letter"
+        echo "Example: POTD 07-07-2026 : Two Sum"
+    fi
+fi
+
+# Ensure message is not too short (unless it's a merge/revert)
+MSG_LENGTH=${#COMMIT_MSG}
+if [ "$MSG_LENGTH" -lt 5 ] && ! echo "$COMMIT_MSG" | grep -qE "^(Merge|Revert)"; then
+    echo "❌ Error: Commit message too short (minimum 5 characters)"
+    exit 1
+fi
+
+exit 0
