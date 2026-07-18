@@ -28,22 +28,15 @@ Constraints:
 1 <= nums[i] <= 1000
 */
 class Solution {
-private:
-    int gcd(int a,int b){
-        if(a==0)return b;
-        if(b==0) return a;
-        while(a!=b){
-            if(a>b) a-=b;
-            else b-=a;
-        }
-    return a;
-    }
 public:
+int gcd(int a,int b){
+    if(a== 0) return b;
+    return gcd(b%a,a);
+}
     int findGCD(vector<int>& nums) {
-        int mina = INT_MAX , maxa = INT_MIN;
-        for(int x:nums){
-            mina = min(mina,x);
-            maxa = max(maxa,x);
+        int maxa = INT_MIN , mina = INT_MAX;
+        for(int i:nums){
+            maxa = max(maxa,i); mina = min(mina,i);
         }
         return gcd(mina,maxa);
     }
