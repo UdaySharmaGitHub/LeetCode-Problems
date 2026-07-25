@@ -19,8 +19,21 @@ Constraints:
 */
 /*
     MOST OPTIMZED APPROACH
-Time Complexity O(N)
-Space Complexity O(1)
+    Time Complexity O(1)
+    Space Complexity O(1)
+*/
+class Solution {
+public:
+    int passThePillow(int n, int time) {
+        int chunks = time / (n - 1);
+        return chunks % 2 == 0 ? (time % (n - 1) + 1) : (n - time % (n - 1));
+    }
+};
+
+/*
+    MOST OPTIMZED APPROACH
+    Time Complexity O(1) 
+    Space Complexity O(1)
 */
 class Solution {
 public:
